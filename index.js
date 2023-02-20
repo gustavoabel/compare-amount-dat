@@ -1,10 +1,30 @@
 const fs = require('fs');
 
-const file1 = JSON.parse(fs.readFileSync('./file1.json', 'utf8'));
-const file2 = JSON.parse(fs.readFileSync('./file2.json', 'utf8'));
+const file1 = JSON.parse(fs.readFileSync('data.json'));
+const file2 = JSON.parse(fs.readFileSync('data2.json'));
 
-const data1 = JSON.parse(file1);
-const data2 = JSON.parse(file2);
-const ids1 = data1.map(obj => obj.id);
-const ids2 = data2.map(obj => obj.id);
+const count1 = countIds(file1);
+const count2 = countIds(file2);
 
+function countIds(data) {
+  const counts = {};
+  for (let item of data) {
+    const id = item.id;
+    counts[id] = (counts[id] || 0) + 1;
+  }
+  return counts;
+}
+
+const diffs = {};
+for (let id of Object.keys({...count1, ...count2})) {
+  const countDiff = (count2[id] || 0) - (count1[id] || 0);
+  if (countDiff !== 0) {
+    diffs[id] = countDiff;
+  } else {
+    diffs[id] = count1[id] || count2[id];
+  }
+}
+
+for (let id in diffs) {
+  console.log(`${id}: ${diffs[id]}`);
+}
