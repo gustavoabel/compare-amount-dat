@@ -3,10 +3,7 @@ const fs = require('fs');
 const file1 = JSON.parse(fs.readFileSync('data.json'));
 const file2 = JSON.parse(fs.readFileSync('data2.json'));
 
-const count1 = countIds(file1);
-const count2 = countIds(file2);
-
-function countIds(data) {
+ const countIds = (data) => {
   const counts = {};
   for (let item of data) {
     const id = item.id;
@@ -14,6 +11,9 @@ function countIds(data) {
   }
   return counts;
 }
+
+const count1 = countIds(file1);
+const count2 = countIds(file2);
 
 const diffs = {};
 for (let id of Object.keys({...count1, ...count2})) {
