@@ -18,7 +18,13 @@ const count2 = countIds(file2);
 const diffs = {};
 for (let id of Object.keys({...count1, ...count2})) {
   const countDiff = (count2[id] || 0) - (count1[id] || 0);
-  if (countDiff !== 0) {
+  if (countDiff === 1) {
+    diffs[id] = '+1';
+  } else if (countDiff === -1) {
+    diffs[id] = '-1';
+  } else if (countDiff > 1) {
+    diffs[id] = `+${countDiff}`;
+  } else if (countDiff < -1) {
     diffs[id] = countDiff;
   } else {
     diffs[id] = count1[id] || count2[id];
