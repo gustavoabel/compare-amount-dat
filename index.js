@@ -6,6 +6,12 @@ const file2 = JSON.parse(fs.readFileSync('data2.json'));
  const countIds = (data) => {
   const counts = {};
   for (let item of data) {
+    for(let property in item) {
+        if(typeof item[property] === 'string') {
+            item[property] = item[property].toUpperCase();
+        }
+    }
+    
     const id = item.id;
     counts[id] = (counts[id] || 0) + 1;
   }
@@ -30,6 +36,9 @@ for (let id of Object.keys({...count1, ...count2})) {
     diffs[id] = count1[id] || count2[id];
   }
 }
+
+fs.writeFileSync('data.json', JSON.stringify(file1));
+fs.writeFileSync('data2.json', JSON.stringify(file2));
 
 for (let id in diffs) {
   console.log(`${id}: ${diffs[id]}`);
